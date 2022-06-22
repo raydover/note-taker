@@ -27,13 +27,13 @@ app.get('/notes', (req, res) =>
 );
 
 // GET Route for retrieving all the Notes
-app.get('/notes', (req, res) => {
+app.get('/api/notes', (req, res) => {
   console.info(`${req.method} request received for notes`);
   readFromFile('./db/notes.json').then((data) => res.json(JSON.parse(data)));
 });
 
 // POST Route for a new Note
-app.post('/notes', (req, res) => {
+app.post('/api/notes', (req, res) => {
   console.info(`${req.method} request received to add a note`);
 
   const { note } = req.body;
