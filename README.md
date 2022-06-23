@@ -9,7 +9,7 @@
 
 ## Decription
 
-The assignement requires students to create a simple calnder application  that allows users to save events for each hour of the day by modifying given starter code. Students will utilize Moment.js library to work with date and time.
+The assignement requires students to use existing starter code to create an application that can be used to write and save notes. This application will use an Express.js back end. The application will save and retrieve data from a JSON file. It is my task to code the back end, connect the two, and then deploy the entire application to Heroku.
 
 ## Resources
 
@@ -21,7 +21,7 @@ The assignement requires students to create a simple calnder application  that a
 
 ## Visuals
 
-![Note Taker Screenshot](./.png)
+![Note Taker Screenshot](./assets/note-taker.png)
 
 ## Author and Acknowledgements
 
