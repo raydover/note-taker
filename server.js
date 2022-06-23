@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
-
+const fs = require('fs');
 const { uuid } = require('./utils/id.js');
-const { clog } = require('./middleware/clog');
+const database = require ('./db/notes.json')
 
 const PORT = process.env.PORT || 3001;
 
@@ -26,28 +26,26 @@ app.get('/notes', (req, res) =>
 
 // GET Route for retrieving all the Notes
 app.get('/api/notes', (req, res) => {
-  console.info(`${req.method} request received for notes`);
-  readFromFile('./db/notes.json').then((data) => res.json(JSON.parse(data)));
+  fs.readFile(path.join(__dirname, './db/notes.json'), 'utf-8', (error, data) => {
+    if (error) throw error;
+    res.json(JSON.parse(data));
+  });
 });
 
 // POST Route for a new Note
 app.post('/api/notes', (req, res) => {
-  console.info(`${req.method} request received to add a note`);
-
-  const { text, title } = req.body;
-
-  if (req.body) {
-    const newNotes = {
-      note,
-      text,
-      id: uuid(),
-    };
-
-    readAndAppend(newNotes, './db/notes.json');
-    res.json(`Note added successfully 🚀`);
-  } else {
-    res.error('Error in adding Note');
-  }
+  const { title, text } = req.body;
+  if (title && text) {
+    const createdNote = {title, text, id: uuid(),};
+    database.push(createdNote);
+    let storedNotes = JSON.stringify((database), null, 2);
+    fs.writeFile(`./db/notes.json`, storedNotes, () => {
+      const response = {
+        body: createdNote,
+      }
+      res.json(response);
+    })
+  };;
 });
 
 app.listen(PORT, () =>
