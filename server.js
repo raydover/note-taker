@@ -1,8 +1,9 @@
+const fs = require('fs');
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
+
+const database = require('./db/notes.json')
 const { uuid } = require('./utils/id.js');
-const database = require ('./db/notes.json')
 
 const PORT = process.env.PORT || 3001;
 
@@ -26,6 +27,7 @@ app.get('/notes', (req, res) =>
 
 // GET Route for retrieving all the Notes
 app.get('/api/notes', (req, res) => {
+
   fs.readFile(path.join(__dirname, './db/notes.json'), 'utf-8', (error, data) => {
     if (error) throw error;
     res.json(JSON.parse(data));
@@ -35,10 +37,13 @@ app.get('/api/notes', (req, res) => {
 // POST Route for a new Note
 app.post('/api/notes', (req, res) => {
   const { title, text } = req.body;
+
   if (title && text) {
-    const createdNote = {title, text, id: uuid(),};
+    const createdNote = { title, text, id: uuid(), };
     database.push(createdNote);
+
     let storedNotes = JSON.stringify((database), null, 2);
+
     fs.writeFile(`./db/notes.json`, storedNotes, () => {
       const response = {
         body: createdNote,
